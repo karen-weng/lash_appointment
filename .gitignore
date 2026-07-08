@@ -3,4 +3,8 @@ node_modules/
 lash_bookings.db
 server.py.bak
 venv/
+__pycache__/
 .DS_Store
+server.py
+.env.development.local
+.env.local

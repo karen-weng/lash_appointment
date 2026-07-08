@@ -578,7 +578,7 @@
 </header>
 
 <!-- ═══ Hero ═══ -->
-<div id="connection-banner" style="display:none;background:var(--danger);color:white;text-align:center;padding:10px;font-size:0.9rem;font-weight:600;">⚠️ Cannot connect to server — booking won't work. Run: python3 server.py</div>
+<div id="connection-banner" style="display:none;background:var(--danger);color:white;text-align:center;padding:10px;font-size:0.9rem;font-weight:600;">⚠️ Cannot connect to server — please check your Vercel deployment and Upstash Redis integration</div>
 <section class="hero" id="hero-section">
   <h1>Your Best Lashes Await</h1>
   <p>Book your lash appointment in seconds. Choose your service, pick a time, and you're all set.</p>
@@ -1146,7 +1146,7 @@ async function loadAdminAppointments() {
 
 async function cancelAppointment(id) {
   if (!confirm("Cancel this appointment?")) return;
-  await api(`/api/cancel/${id}`);
+  await api(`/api/cancel?id=${id}`);
   loadAdminAppointments();
 }
 </script>

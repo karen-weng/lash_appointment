@@ -1,21 +1,28 @@
-const { getAppointments, saveAppointments, corsHeaders } = require("./_lib");
+const { getAppointments, saveAppointments, applyCors } = require("./_lib");
 
 module.exports = async function handler(req, res) {
+  applyCors(res);
+
   if (req.method === "OPTIONS") {
-    return res.status(200).set(corsHeaders()).send("");
+    return res.status(200).end();
   }
 
   const { id } = req.query;
   if (!id) {
-    return res.status(400).set(corsHeaders()).json({ error: "Appointment ID required" });
+    return res.status(400).json({ error: "Appointment ID required" });
   }
 
-  const appointments = await getAppointments();
-  const appt = appointments.find(a => a.id === parseInt(id));
-  if (appt) {
-    appt.status = "cancelled";
-    await saveAppointments(appointments);
-  }
+  try {
+    const appointments = await getAppointments();
+    const appt = appointments.find(a => a.id === parseInt(id));
+    if (appt) {
+      appt.status = "cancelled";
+      await saveAppointments(appointments);
+    }
 
-  res.status(200).set(corsHeaders()).json({ success: true });
+    res.status(200).json({ success: true });
+  } catch (err) {
+    console.error("Cancel error:", err);
+    res.status(500).json({ error: "Failed to cancel appointment: " + err.message });
+  }
 };

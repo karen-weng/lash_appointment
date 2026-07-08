@@ -2,7 +2,16 @@
 // Shared library — database, email, seed data
 // ══════════════════════════════════════════════════════════
 
-const { kv } = require("@vercel/kv");
+const { Redis } = require("@upstash/redis");
+
+// ─── Redis connection ────────────────────────────────────
+// Vercel prefixes env vars with the store name. Since the store
+// is named "lash", the vars are lash_KV_REST_API_URL etc.
+// These work with @upstash/redis since Vercel KV was built on Upstash.
+const redis = new Redis({
+  url: process.env.lash_KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.lash_KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN,
+});
 
 // ─── Config ──────────────────────────────────────────────
 const BUSINESS_NAME = "Luxe Lashes";
@@ -46,28 +55,28 @@ const BUSINESS_HOURS = [
   { day_of_week: 6, open_time: "09:00", close_time: "17:00", is_open: true },
 ];
 
-// ─── KV Helpers ──────────────────────────────────────────
+// ─── Redis Helpers ───────────────────────────────────────
 async function getNextId(key) {
-  const current = (await kv.get(key)) || 0;
+  const current = (await redis.get(key)) || 0;
   const next = current + 1;
-  await kv.set(key, next);
+  await redis.set(key, next);
   return next;
 }
 
 async function getAppointments() {
-  return (await kv.get("appointments")) || [];
+  return (await redis.get("appointments")) || [];
 }
 
 async function saveAppointments(appointments) {
-  await kv.set("appointments", appointments);
+  await redis.set("appointments", appointments);
 }
 
 async function getCustomers() {
-  return (await kv.get("customers")) || [];
+  return (await redis.get("customers")) || [];
 }
 
 async function saveCustomers(customers) {
-  await kv.set("customers", customers);
+  await redis.set("customers", customers);
 }
 
 // ─── Email ───────────────────────────────────────────────
@@ -184,6 +193,12 @@ function formatDateNice(d) {
   }
 }
 
+function applyCors(res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
+
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
@@ -197,5 +212,5 @@ module.exports = {
   SERVICES, BUSINESS_HOURS,
   getNextId, getAppointments, saveAppointments, getCustomers, saveCustomers,
   sendConfirmationEmail, sendReminderEmail,
-  formatTimeNice, formatDateNice, corsHeaders,
+  formatTimeNice, formatDateNice, corsHeaders, applyCors,
 };

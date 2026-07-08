@@ -1,10 +1,10 @@
-const { SERVICES, corsHeaders } = require("./_lib");
+const { SERVICES, applyCors } = require("./_lib");
 
 module.exports = async function handler(req, res) {
-  if (req.method === "OPTIONS") {
-    return res.status(200).set(corsHeaders()).send("");
-  }
+  applyCors(res);
+
+  if (req.method === "OPTIONS") return res.status(200).end();
 
   const categories = [...new Set(SERVICES.map(s => s.category))];
-  res.status(200).set(corsHeaders()).json({ categories });
+  return res.status(200).json({ categories });
 };

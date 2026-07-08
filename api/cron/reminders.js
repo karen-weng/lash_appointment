@@ -1,6 +1,6 @@
 const {
   getAppointments, saveAppointments,
-  sendReminderEmail, REMINDER_HOURS_BEFORE, corsHeaders,
+  sendReminderEmail, REMINDER_HOURS_BEFORE, applyCors,
 } = require("../_lib");
 
 // This runs as a Vercel Cron Job once daily at 9am (Hobby plan limit)
@@ -8,6 +8,8 @@ const {
 // and sends reminder emails
 
 module.exports = async function handler(req, res) {
+  applyCors(res);
+
   // Security: verify this is called by Vercel Cron
   const authHeader = req.headers["authorization"];
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
