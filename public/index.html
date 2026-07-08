@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxe Lashes — Book Your Appointment</title>
+<style>
+  :root {
+    --rose: #c4837f;
+    --rose-light: #f5e6e4;
+    --rose-dark: #a06560;
+    --gold: #c9a96e;
+    --gold-light: #f5efe3;
+    --cream: #faf7f4;
+    --charcoal: #2d2d2d;
+    --gray: #6b6b6b;
+    --gray-light: #e8e4e1;
+    --white: #ffffff;
+    --success: #5cb85c;
+    --danger: #d9534f;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ─────────────────────────────── */
+  header {
+    background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .logo span { color: var(--gold); }
+  nav a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    margin-left: 24px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--gold); }
+
+  /* ── Hero ───────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--rose) 0%, var(--rose-dark) 50%, var(--charcoal) 100%);
+    color: white;
+    text-align: center;
+    padding: 80px 24px 60px;
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 500px;
+    margin: 0 auto 32px;
+  }
+  .btn-hero {
+    background: var(--gold);
+    color: var(--charcoal);
+    padding: 16px 40px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,169,110,0.4);
+  }
+
+  /* ── Container ──────────────────────────── */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  /* ── Booking Steps ──────────────────────── */
+  .steps-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 40px;
+  }
+  .step-dot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    background: var(--white);
+    border: 2px solid var(--gray-light);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray);
+    transition: all 0.3s;
+  }
+  .step-dot.active {
+    background: var(--rose);
+    border-color: var(--rose);
+    color: white;
+  }
+  .step-dot.completed {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+  }
+  .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+  .step-dot.active .step-num { background: rgba(255,255,255,0.25); }
+  .step-dot.completed .step-num { background: rgba(255,255,255,0.25); }
+
+  .step-content { display: none; }
+  .step-content.active { display: block; }
+
+  /* ── Category Filter ────────────────────── */
+  .category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+    justify-content: center;
+  }
+  .cat-btn {
+    padding: 8px 20px;
+    border: 2px solid var(--rose-light);
+    border-radius: 50px;
+    background: var(--white);
+    color: var(--rose-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .cat-btn:hover, .cat-btn.active {
+    background: var(--rose);
+    border-color: var(--rose);
+    color: white;
+  }
+
+  /* ── Service Cards ──────────────────────── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .service-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--rose-light);
+  }
+  .service-card.selected {
+    border-color: var(--rose);
+    background: var(--rose-light);
+  }
+  .service-card .badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--gold);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .service-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: var(--charcoal);
+  }
+  .service-card .desc {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 14px;
+    min-height: 42px;
+  }
+  .service-card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--gray-light);
+    padding-top: 14px;
+  }
+  .service-card .duration {
+    font-size: 0.85rem;
+    color: var(--gray);
+  }
+  .service-card .price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--rose-dark);
+  }
+
+  /* ── Calendar ───────────────────────────── */
+  .calendar-wrapper {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+  }
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .calendar-header h3 {
+    font-size: 1.2rem;
+  }
+  .cal-nav {
+    background: var(--rose-light);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--rose-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .cal-nav:hover { background: var(--rose); color: white; }
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    text-align: center;
+  }
+  .calendar-grid .day-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gray);
+    padding: 8px 0;
+    text-transform: uppercase;
+  }
+  .cal-day {
+    padding: 10px 6px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+  }
+  .cal-day:hover:not(.disabled) { background: var(--rose-light); }
+  .cal-day.selected {
+    background: var(--rose);
+    color: white;
+    font-weight: 700;
+  }
+  .cal-day.today {
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+  .cal-day.disabled {
+    color: var(--gray-light);
+    cursor: not-allowed;
+  }
+  .cal-day.empty { cursor: default; }
+
+  /* ── Time Slots ─────────────────────────── */
+  .time-slots-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+  }
+  .time-slot {
+    padding: 12px 8px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    background: var(--white);
+  }
+  .time-slot:hover:not(.unavailable) {
+    border-color: var(--rose);
+    background: var(--rose-light);
+  }
+  .time-slot.selected {
+    border-color: var(--rose);
+    background: var(--rose);
+    color: white;
+  }
+  .time-slot.unavailable {
+    background: var(--gray-light);
+    color: #999;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+  .closed-msg {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray);
+    font-size: 1.05rem;
+  }
+  .closed-msg span { font-size: 2rem; display: block; margin-bottom: 10px; }
+
+  /* ── Customer Form ──────────────────────── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--charcoal);
+  }
+  .form-group input, .form-group textarea {
+    padding: 12px 16px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: var(--white);
+  }
+  .form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--rose);
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+
+  /* ── Booking Summary ────────────────────── */
+  .summary-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-lg);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .summary-card h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--rose-dark);
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .summary-row:last-of-type { border-bottom: none; }
+  .summary-label { color: var(--gray); font-size: 0.9rem; }
+  .summary-value { font-weight: 600; }
+  .summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 18px 0 0;
+    margin-top: 12px;
+    border-top: 2px solid var(--charcoal);
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+
+  /* ── Confirmation ───────────────────────── */
+  .confirmation {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .confirmation .check {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--success);
+    color: white;
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+  .confirmation h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+  .confirmation p {
+    color: var(--gray);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* ── Buttons ────────────────────────────── */
+  .btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 32px;
+  }
+  .btn {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--rose);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--rose-dark); }
+  .btn-primary:disabled {
+    background: var(--gray-light);
+    color: #999;
+    cursor: not-allowed;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--gray-light);
+    color: var(--gray);
+  }
+  .btn-outline:hover { border-color: var(--rose); color: var(--rose); }
+  .btn-danger {
+    background: var(--danger);
+    color: white;
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+
+  /* ── Admin Table ────────────────────────── */
+  .admin-section {
+    display: none;
+  }
+  .admin-section.active { display: block; }
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .admin-table th {
+    background: var(--charcoal);
+    color: white;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .admin-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-light);
+    font-size: 0.9rem;
+  }
+  .admin-table tr:hover td { background: var(--rose-light); }
+  .status-badge {
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .status-confirmed { background: #d4edda; color: #155724; }
+  .status-cancelled { background: #f8d7da; color: #721c24; }
+
+  /* ── Responsive ─────────────────────────── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 1.8rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .steps-indicator { flex-wrap: wrap; }
+    .step-dot { font-size: 0.75rem; padding: 8px 14px; }
+    .admin-table { font-size: 0.8rem; }
+    .admin-table th, .admin-table td { padding: 8px 10px; }
+  }
+
+  /* ── Loading spinner ────────────────────── */
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray);
+    font-size: 1.1rem;
+  }
+  .loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 20px;
+    border: 3px solid var(--gray-light);
+    border-top-color: var(--rose);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- ═══ Header ═══ -->
+<header>
+  <div class="header-inner">
+    <div class="logo">LUXE <span>LASHES</span></div>
+    <nav>
+      <a href="#" onclick="showBooking()" class="active" id="nav-book">Book Now</a>
+      <a href="#" onclick="showAdmin()" id="nav-admin">Admin</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══ Hero ═══ -->
+<div id="connection-banner" style="display:none;background:var(--danger);color:white;text-align:center;padding:10px;font-size:0.9rem;font-weight:600;">⚠️ Cannot connect to server — booking won't work. Run: python3 server.py</div>
+<section class="hero" id="hero-section">
+  <h1>Your Best Lashes Await</h1>
+  <p>Book your lash appointment in seconds. Choose your service, pick a time, and you're all set.</p>
+  <button class="btn-hero" onclick="showBooking()">Book Appointment</button>
+</section>
+
+<!-- ═══ Booking Flow ═══ -->
+<div class="container" id="booking-section">
+  <!-- Step Indicator -->
+  <div class="steps-indicator">
+    <div class="step-dot active" data-step="1">
+      <span class="step-num">1</span> Service
+    </div>
+    <div class="step-dot" data-step="2">
+      <span class="step-num">2</span> Date & Time
+    </div>
+    <div class="step-dot" data-step="3">
+      <span class="step-num">3</span> Your Info
+    </div>
+    <div class="step-dot" data-step="4">
+      <span class="step-num">4</span> Confirm
+    </div>
+  </div>
+
+  <!-- Step 1: Choose Service -->
+  <div class="step-content active" id="step-1">
+    <p style="text-align:center;color:var(--gray);margin-bottom:20px;font-size:0.95rem;">👇 Select a service below to continue</p>
+    <div class="category-filters" id="category-filters"></div>
+    <div class="services-grid" id="services-grid"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-step1-next" disabled onclick="goToStep(2)">Choose Date & Time →</button>
+    </div>
+    <p id="step1-hint" style="text-align:center;color:var(--danger);margin-top:12px;font-size:0.85rem;">⚠️ Please click on a service card above first</p>
+  </div>
+
+  <!-- Step 2: Date & Time -->
+  <div class="step-content" id="step-2">
+    <div class="calendar-wrapper">
+      <div class="calendar-header">
+        <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+        <h3 id="calendar-title"></h3>
+        <button class="cal-nav" onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
+    <div id="time-slots-container"></div>
+    <p id="step2-hint" style="text-align:center;color:var(--gray);margin-top:12px;font-size:0.85rem;">👆 Pick a date on the calendar, then choose an available time slot</p>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goToStep(1)">← Back</button>
+      <button class="btn btn-primary" id="btn-step2-next" disabled onclick="goToStep(3)">Enter Your Info →</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Customer Info -->
+  <div class="step-content" id="step-3">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>First Name *</label>
+        <input type="text" id="first_name" placeholder="Jane" required>
+      </div>
+      <div class="form-group">
+        <label>Last Name *</label>
+        <input type="text" id="last_name" placeholder="Doe" required>
+      </div>
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" id="email" placeholder="jane@example.com" required>
+      </div>
+      <div class="form-group">
+        <label>Phone *</label>
+        <input type="tel" id="phone" placeholder="(555) 000-0000" required>
+      </div>
+      <div class="form-group full">
+        <label>Notes (optional)</label>
+        <textarea id="notes" placeholder="Any allergies, preferences, or special requests..."></textarea>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goToStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">Review Booking →</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Review & Confirm -->
+  <div class="step-content" id="step-4">
+    <div class="summary-card" id="summary-card"></div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="goToStep(3)">← Back</button>
+      <button class="btn btn-primary" id="btn-confirm" onclick="submitBooking()">Confirm Booking</button>
+    </div>
+  </div>
+
+  <!-- Confirmation -->
+  <div class="step-content" id="step-confirmation">
+    <div class="confirmation">
+      <div class="check">✓</div>
+      <h2>You're Booked!</h2>
+      <p>Your appointment has been confirmed. A reminder will be sent to your email before your visit.</p>
+      <div id="confirmation-details" style="margin-top:24px;text-align:left;max-width:400px;margin-left:auto;margin-right:auto;"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="resetBooking()">Book Another</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Admin Section ═══ -->
+<div class="container admin-section" id="admin-section">
+  <h2 style="margin-bottom:8px;">📋 Appointment Dashboard</h2>
+  <p style="color:var(--gray);margin-bottom:24px;">View and manage all bookings</p>
+  <div style="margin-bottom:20px;display:flex;gap:12px;align-items:center;">
+    <label style="font-weight:600;font-size:0.9rem;">Filter by date:</label>
+    <input type="date" id="admin-date" style="padding:8px 12px;border:2px solid var(--gray-light);border-radius:var(--radius-sm);font-size:0.9rem;" onchange="loadAdminAppointments()">
+    <button class="btn btn-outline" style="padding:8px 18px;font-size:0.85rem;" onclick="document.getElementById('admin-date').value='';loadAdminAppointments()">Show All</button>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="admin-table" id="admin-table">
+      <thead>
+        <tr>
+          <th>Date</th><th>Time</th><th>Client</th><th>Email</th><th>Phone</th><th>Service</th><th>Price</th><th>Status</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="admin-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// State
+// ══════════════════════════════════════════════════════════
+const state = {
+  selectedService: null,
+  selectedDate: null,
+  selectedTime: null,
+  calendarMonth: new Date().getMonth(),
+  calendarYear: new Date().getFullYear(),
+  currentStep: 1,
+  services: [],
+  categories: [],
+};
+
+const API = "";  // same origin
+
+// ══════════════════════════════════════════════════════════
+// Init
+// ══════════════════════════════════════════════════════════
+document.addEventListener("DOMContentLoaded", async () => {
+  // Check server connection first
+  try {
+    await fetch("/api/categories", { method: "GET" });
+    document.getElementById("connection-banner").style.display = "none";
+  } catch (err) {
+    document.getElementById("connection-banner").style.display = "block";
+    console.error("Server connection failed:", err);
+  }
+  await loadCategories();
+  await loadServices();
+  renderCalendar();
+});
+
+// ══════════════════════════════════════════════════════════
+// API Calls
+// ══════════════════════════════════════════════════════════
+async function api(path) {
+  try {
+    const res = await fetch(API + path);
+    if (!res.ok) throw new Error(`Server returned ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.error("API GET error:", path, err);
+    throw err;
+  }
+}
+
+async function apiPost(path, data) {
+  try {
+    const res = await fetch(API + path, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(`Server returned ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.error("API POST error:", path, err);
+    throw err;
+  }
+}
+
+async function loadCategories() {
+  try {
+    const data = await api("/api/categories");
+    state.categories = data.categories;
+    const container = document.getElementById("category-filters");
+    container.innerHTML = `<button class="cat-btn active" onclick="filterCategory(null, this)">All</button>`;
+    state.categories.forEach(cat => {
+      container.innerHTML += `<button class="cat-btn" onclick="filterCategory('${cat}', this)">${cat}</button>`;
+    });
+  } catch (err) {
+    console.error("Failed to load categories:", err);
+    document.getElementById("category-filters").innerHTML = '<div style="color:var(--danger);text-align:center;padding:20px;">⚠️ Could not connect to server. Please make sure the server is running (python3 server.py)</div>';
+  }
+}
+
+async function loadServices(category) {
+  let url = "/api/services";
+  if (category) url += `?category=${category}`;
+  try {
+    const data = await api(url);
+    state.services = data.services;
+    renderServices();
+  } catch (err) {
+    console.error("Failed to load services:", err);
+    document.getElementById("services-grid").innerHTML = '<div style="color:var(--danger);text-align:center;padding:40px;grid-column:1/-1;">⚠️ Could not load services. Is the server running?<br><br><button class="btn btn-primary" onclick="loadServices()">Retry</button></div>';
+  }
+}
+
+function filterCategory(cat, btn) {
+  document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  loadServices(cat);
+}
+
+function renderServices() {
+  const grid = document.getElementById("services-grid");
+  grid.innerHTML = state.services.map(s => `
+    <div class="service-card ${state.selectedService?.id === s.id ? 'selected' : ''}" onclick="selectService(${s.id})" style="cursor:pointer;">
+      ${s.is_popular ? '<span class="badge">Popular</span>' : ''}
+      <h3>${s.name}</h3>
+      <p class="desc">${s.description}</p>
+      <div class="meta">
+        <span class="duration">⏱ ${s.duration_minutes} min</span>
+        <span class="price">$${s.price.toFixed(2)}</span>
+      </div>
+      ${state.selectedService?.id === s.id ? '<div style="text-align:center;margin-top:10px;color:var(--rose-dark);font-weight:700;font-size:0.9rem;">✓ Selected</div>' : '<div style="text-align:center;margin-top:10px;color:var(--gray);font-size:0.85rem;">Click to select</div>'}
+    </div>
+  `).join("");
+}
+
+function selectService(id) {
+  state.selectedService = state.services.find(s => s.id === id);
+  document.getElementById("btn-step1-next").disabled = false;
+  document.getElementById("step1-hint").style.display = "none";
+  renderServices();
+}
+
+// ══════════════════════════════════════════════════════════
+// Calendar
+// ══════════════════════════════════════════════════════════
+function renderCalendar() {
+  const year = state.calendarYear;
+  const month = state.calendarMonth;
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  document.getElementById("calendar-title").textContent =
+    new Date(year, month).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
+  const labels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  let html = labels.map(l => `<div class="day-label">${l}</div>`).join("");
+
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isPast = date < today;
+    const isToday = date.getTime() === today.getTime();
+    const isSelected = state.selectedDate === dateStr;
+    let cls = "cal-day";
+    if (isPast) cls += " disabled";
+    if (isToday) cls += " today";
+    if (isSelected) cls += " selected";
+    html += `<div class="${cls}" ${isPast ? '' : `onclick="selectDate('${dateStr}', this)"`}>${d}</div>`;
+  }
+
+  document.getElementById("calendar-grid").innerHTML = html;
+}
+
+function changeMonth(dir) {
+  state.calendarMonth += dir;
+  if (state.calendarMonth > 11) { state.calendarMonth = 0; state.calendarYear++; }
+  if (state.calendarMonth < 0) { state.calendarMonth = 11; state.calendarYear--; }
+  renderCalendar();
+}
+
+async function selectDate(dateStr, el) {
+  state.selectedDate = dateStr;
+  state.selectedTime = null;
+  document.querySelectorAll(".cal-day").forEach(d => d.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("btn-step2-next").disabled = true;
+  await loadTimeSlots();
+}
+
+async function loadTimeSlots() {
+  const container = document.getElementById("time-slots-container");
+  if (!state.selectedDate || !state.selectedService) {
+    container.innerHTML = "";
+    return;
+  }
+  container.innerHTML = '<div class="loading">Loading availability…</div>';
+
+  let data;
+  try {
+    data = await api(`/api/availability?date=${state.selectedDate}&service_id=${state.selectedService.id}`);
+  } catch (err) {
+    container.innerHTML = '<div style="color:var(--danger);text-align:center;padding:20px;">⚠️ Could not check availability. Is the server running?<br><br><button class="btn btn-primary" onclick="loadTimeSlots()">Retry</button></div>';
+    return;
+  }
+
+  if (data.closed) {
+    container.innerHTML = `<div class="closed-msg"><span>🙅‍♀️</span>We're closed on this day. Please pick another date.</div>`;
+    return;
+  }
+
+  const available = data.slots.filter(s => s.available);
+  if (available.length === 0) {
+    container.innerHTML = `<div class="closed-msg"><span>😟</span>No available slots on this day.</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <p class="time-slots-title">Available Times for ${new Date(state.selectedDate + 'T12:00').toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric' })}</p>
+    <div class="time-slots-grid">
+      ${data.slots.map(s => `
+        <div class="time-slot ${s.available ? '' : 'unavailable'} ${state.selectedTime === s.time ? 'selected' : ''}"
+             ${s.available ? `onclick="selectTime('${s.time}', this)"` : ''}>
+          ${s.display}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function selectTime(time, el) {
+  state.selectedTime = time;
+  document.querySelectorAll(".time-slot").forEach(s => s.classList.remove("selected"));
+  el.classList.add("selected");
+  document.getElementById("btn-step2-next").disabled = false;
+  document.getElementById("step2-hint").style.display = "none";
+}
+
+// ══════════════════════════════════════════════════════════
+// Step Navigation
+// ══════════════════════════════════════════════════════════
+function goToStep(step) {
+  // Validation
+  if (step === 2 && !state.selectedService) return alert("Please select a service first.");
+  if (step === 3 && !state.selectedTime) return alert("Please select a date and time.");
+  if (step === 4) {
+    const fn = document.getElementById("first_name").value.trim();
+    const ln = document.getElementById("last_name").value.trim();
+    const em = document.getElementById("email").value.trim();
+    const ph = document.getElementById("phone").value.trim();
+    if (!fn || !ln || !em || !ph) return alert("Please fill in all required fields.");
+    renderSummary();
+  }
+
+  state.currentStep = step;
+  document.querySelectorAll(".step-content").forEach(el => el.classList.remove("active"));
+  document.getElementById(`step-${step}`).classList.add("active");
+
+  document.querySelectorAll(".step-dot").forEach(dot => {
+    const s = parseInt(dot.dataset.step);
+    dot.classList.remove("active", "completed");
+    if (s < step) dot.classList.add("completed");
+    else if (s === step) dot.classList.add("active");
+  });
+
+  // Hide hero after step 1
+  if (step > 1) document.getElementById("hero-section").classList.add("hidden");
+}
+
+function formatTime(t) {
+  const [h, m] = t.split(":").map(Number);
+  const ampm = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 || 12;
+  return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
+}
+
+function formatDate(d) {
+  return new Date(d + "T12:00").toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric", year: "numeric"
+  });
+}
+
+function renderSummary() {
+  const s = state.selectedService;
+  const card = document.getElementById("summary-card");
+  card.innerHTML = `
+    <h2>Booking Summary</h2>
+    <div class="summary-row">
+      <span class="summary-label">Service</span>
+      <span class="summary-value">${s.name}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Duration</span>
+      <span class="summary-value">${s.duration_minutes} minutes</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Date</span>
+      <span class="summary-value">${formatDate(state.selectedDate)}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Time</span>
+      <span class="summary-value">${formatTime(state.selectedTime)}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Name</span>
+      <span class="summary-value">${document.getElementById("first_name").value} ${document.getElementById("last_name").value}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Email</span>
+      <span class="summary-value">${document.getElementById("email").value}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Phone</span>
+      <span class="summary-value">${document.getElementById("phone").value}</span>
+    </div>
+    <div class="summary-total">
+      <span>Total</span>
+      <span style="color:var(--rose-dark);">$${s.price.toFixed(2)}</span>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════════════════
+// Submit Booking
+// ══════════════════════════════════════════════════════════
+async function submitBooking() {
+  const btn = document.getElementById("btn-confirm");
+  btn.disabled = true;
+  btn.textContent = "Booking…";
+
+  const data = {
+    first_name: document.getElementById("first_name").value.trim(),
+    last_name: document.getElementById("last_name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    service_id: state.selectedService.id,
+    date: state.selectedDate,
+    time: state.selectedTime,
+    notes: document.getElementById("notes").value.trim(),
+  };
+
+  console.log("Submitting booking:", data);
+
+  try {
+    const result = await apiPost("/api/book", data);
+    if (result.error) {
+      alert("Booking failed: " + result.error);
+      btn.disabled = false;
+      btn.textContent = "Confirm Booking";
+      return;
+    }
+    console.log("Booking confirmed:", result);
+    showConfirmation(result.appointment);
+  } catch (err) {
+    console.error("Booking error:", err);
+    alert("Could not connect to server. Please make sure the server is running and try again.\n\nError: " + err.message);
+    btn.disabled = false;
+    btn.textContent = "Confirm Booking";
+  }
+}
+
+function showConfirmation(appt) {
+  document.querySelectorAll(".step-content").forEach(el => el.classList.remove("active"));
+  document.getElementById("step-confirmation").classList.add("active");
+  document.querySelectorAll(".step-dot").forEach(d => d.classList.add("completed"));
+
+  document.getElementById("confirmation-details").innerHTML = `
+    <div class="summary-card" style="box-shadow:var(--shadow);">
+      <div class="summary-row">
+        <span class="summary-label">Confirmation #</span>
+        <span class="summary-value">${appt.id}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Service</span>
+        <span class="summary-value">${appt.service_name}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Date</span>
+        <span class="summary-value">${formatDate(appt.appointment_date)}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Time</span>
+        <span class="summary-value">${formatTime(appt.appointment_time)}</span>
+      </div>
+      <div class="summary-total">
+        <span>Total</span>
+        <span style="color:var(--rose-dark);">$${parseFloat(appt.price).toFixed(2)}</span>
+      </div>
+    </div>
+  `;
+}
+
+function resetBooking() {
+  state.selectedService = null;
+  state.selectedDate = null;
+  state.selectedTime = null;
+  document.getElementById("btn-step1-next").disabled = true;
+  document.getElementById("btn-step2-next").disabled = true;
+  document.getElementById("first_name").value = "";
+  document.getElementById("last_name").value = "";
+  document.getElementById("email").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("notes").value = "";
+  document.getElementById("time-slots-container").innerHTML = "";
+  document.getElementById("hero-section").classList.remove("hidden");
+  renderServices();
+  renderCalendar();
+  goToStep(1);
+}
+
+// ══════════════════════════════════════════════════════════
+// Admin
+// ══════════════════════════════════════════════════════════
+function showBooking() {
+  document.getElementById("booking-section").style.display = "";
+  document.getElementById("admin-section").classList.remove("active");
+  document.getElementById("hero-section").classList.remove("hidden");
+  document.getElementById("nav-book").classList.add("active");
+  document.getElementById("nav-admin").classList.remove("active");
+}
+
+function showAdmin() {
+  document.getElementById("booking-section").style.display = "none";
+  document.getElementById("hero-section").classList.add("hidden");
+  document.getElementById("admin-section").classList.add("active");
+  document.getElementById("nav-book").classList.remove("active");
+  document.getElementById("nav-admin").classList.add("active");
+  loadAdminAppointments();
+}
+
+async function loadAdminAppointments() {
+  const date = document.getElementById("admin-date").value;
+  let url = "/api/appointments";
+  if (date) url += `?date=${date}`;
+  const data = await api(url);
+  const tbody = document.getElementById("admin-tbody");
+
+  if (data.appointments.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--gray);">No appointments found</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.appointments.map(a => `
+    <tr>
+      <td>${formatDate(a.appointment_date)}</td>
+      <td>${formatTime(a.appointment_time)}</td>
+      <td>${a.first_name} ${a.last_name}</td>
+      <td>${a.email}</td>
+      <td>${a.phone}</td>
+      <td>${a.service_name}</td>
+      <td>$${parseFloat(a.price).toFixed(2)}</td>
+      <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+      <td>${a.status === 'confirmed' ? `<button class="btn btn-danger" onclick="cancelAppointment(${a.id})">Cancel</button>` : ''}</td>
+    </tr>
+  `).join("");
+}
+
+async function cancelAppointment(id) {
+  if (!confirm("Cancel this appointment?")) return;
+  await api(`/api/cancel?id=${id}`);
+  loadAdminAppointments();
+}
+</script>
+
+</body>
+</html>
