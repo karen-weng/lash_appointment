@@ -3,7 +3,7 @@ const {
   sendReminderEmail, REMINDER_HOURS_BEFORE, corsHeaders,
 } = require("../_lib");
 
-// This runs as a Vercel Cron Job every hour
+// This runs as a Vercel Cron Job once daily at 9am (Hobby plan limit)
 // It checks for appointments coming up within REMINDER_HOURS_BEFORE hours
 // and sends reminder emails
 
@@ -17,7 +17,9 @@ module.exports = async function handler(req, res) {
   try {
     const appointments = await getAppointments();
     const now = new Date();
-    const cutoff = new Date(now.getTime() + REMINDER_HOURS_BEFORE * 60 * 60 * 1000);
+    // Since cron runs once daily, send reminders for all appointments happening today
+    const endOfDay = new Date(now);
+    endOfDay.setHours(23, 59, 59, 999);
 
     let remindersSent = 0;
 
@@ -25,7 +27,7 @@ module.exports = async function handler(req, res) {
       if (appt.status !== "confirmed" || appt.reminder_sent) continue;
 
       const apptDate = new Date(`${appt.appointment_date}T${appt.appointment_time}:00`);
-      if (now <= apptDate && apptDate <= cutoff) {
+      if (apptDate >= now && apptDate <= endOfDay) {
         const name = `${appt.first_name} ${appt.last_name}`;
         const sent = await sendReminderEmail(
           appt.email, name, appt.service_name,
